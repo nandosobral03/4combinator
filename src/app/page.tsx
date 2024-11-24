@@ -1,53 +1,79 @@
-import Link from "next/link";
+import Header from "@/app/_components/Header";
+import ThreadItem from "@/app/_components/ThreadItem";
+import type { Thread } from "@/app/types";
+import { api } from "@/trpc/server";
+import { type FC } from "react";
 
-import { LatestPost } from "~/app/_components/post";
-import { api, HydrateClient } from "~/trpc/server";
+const exampleThreads: Thread[] = [
+  {
+    no: 1234567,
+    sub: "archlinux.org",
+    com: "Post your current desktop setup. Here's mine: Running Arch Linux with i3-gaps, polybar, and some custom scripts.",
+    time: 1699123200,
+    replies: 45,
+    images: 23,
+    points: 156,
+    by: "techuser",
+  },
+  {
+    no: 1234568,
+    com: "What programming language should I learn first? Been interested in getting into software development.",
+    time: 1699122300,
+    replies: 67,
+    images: 2,
+    points: 10,
+    by: "learner",
+  },
+  {
+    no: 1234569,
+    sub: "Mechanical keyboard thread",
+    com: "Show off your mechanical keyboards. Just got my first custom build with Gateron Browns and PBT keycaps.",
+    time: 1699121400,
+    replies: 89,
+    images: 56,
+    points: 200,
+    by: "keyboard_enthusiast",
+  },
+  {
+    no: 1234570,
+    com: "Anyone else using Firefox? What extensions do you recommend for privacy and productivity?",
+    time: 1699120500,
+    replies: 34,
+    images: 3,
+    points: 50,
+    by: "privacy_seeker",
+  },
+  {
+    no: 1234571,
+    sub: "ThinkPad appreciation",
+    com: "Just picked up a used T480. These machines are built like tanks. What's your ThinkPad story?",
+    time: 1699119600,
+    replies: 78,
+    images: 15,
+    points: 120,
+    by: "thinkpad_lover",
+  },
+];
 
-export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
-
-  void api.post.getLatest.prefetch();
+const Home: FC = async () => {
+  // TODO: Replace with actual API call to fetch /g/ threads
+  const threads: Thread[] = await api.catalog.getCatalogForBoard({
+    board: "g",
+    page: 1,
+  });
 
   return (
-    <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
-        <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-          <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
-            Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
-          </h1>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/usage/first-steps"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
-              <div className="text-lg">
-                Just the basics - Everything you need to know to set up your
-                database and authentication.
-              </div>
-            </Link>
-            <Link
-              className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20"
-              href="https://create.t3.gg/en/introduction"
-              target="_blank"
-            >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
-              <div className="text-lg">
-                Learn more about Create T3 App, the libraries it uses, and how
-                to deploy it.
-              </div>
-            </Link>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-              {hello ? hello.greeting : "Loading tRPC query..."}
-            </p>
-          </div>
-
-          <LatestPost />
+    <>
+      <Header />
+      <main className="min-h-screen bg-[#f6f6ef]">
+        <div className="mx-2 max-w-6xl py-1">
+          {threads.map((thread, index) => (
+            <ThreadItem key={thread.no} thread={thread} index={index + 1} />
+          ))}
         </div>
       </main>
-    </HydrateClient>
+    </>
   );
-}
+};
+
+export default Home;

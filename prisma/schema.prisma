@@ -10,11 +10,22 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
+model CatalogCache {
+    id        String   @id @default(cuid())
+    board     String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    @@index([name])
+    page      CatalogCachePage[]
+}
+
+model CatalogCachePage {
+    id        String   @id @default(cuid())
+    page      Int
+    catalogId String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    threads   String // JSON string
+
+    catalog   CatalogCache @relation(fields: [catalogId], references: [id])
 }
