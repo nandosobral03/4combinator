@@ -2,20 +2,16 @@ import { boards } from "@/app/types/boards";
 import { CACHE_TTL } from "@/app/utils/cache";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { fetchCatalog } from "@/server/services/4chan";
-import { CatalogCacheThread } from "@prisma/client";
+import { CatalogCacheThread, Prisma, PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 const getCurrentCatalogCache = async (
-  ctx: { db: any },
+  ctx: { db: PrismaClient },
   board: string,
   threadNo?: number,
   skip = 0,
   take = 30,
 ) => {
-  console.log("skip", skip);
-  console.log("take", take);
-  console.log("threadNo", threadNo);
-  console.log("board", board);
   const catalog = await ctx.db.catalogCache.findFirst({
     where: {
       board,
@@ -39,7 +35,6 @@ const getCurrentCatalogCache = async (
     },
   });
 
-  console.log("catalog", catalog);
   return catalog;
 };
 
@@ -87,51 +82,49 @@ export const catalogRouter = createTRPCRouter({
             },
           });
 
-          const flattenedCatalog = newCatalog.flatMap((page, pageIndex) =>
-            page.threads.map((thread, threadIndex) => ({
-              catalogCacheId: cached.id,
-              board: input.board,
-              ordinal: pageIndex * page.threads.length + threadIndex,
-              bumplimit: thread.bumplimit,
-              closed: thread.closed,
-              com: thread.com,
-              country: thread.country,
-              country_name: thread.country_name,
-              filename: thread.filename,
-              capcode: thread.capcode,
-              semantic_url: thread.semantic_url,
-              custom_spoiler: thread.custom_spoiler,
-              omitted_posts: thread.omitted_posts,
-              omitted_images: thread.omitted_images,
-              replies: thread.replies,
-              images: thread.images,
-              ext: thread.ext,
-              fsize: thread.fsize,
-              tim: thread.tim,
-              md5: thread.md5,
-              w: thread.w,
-              h: thread.h,
-              tn_w: thread.tn_w,
-              tn_h: thread.tn_h,
-              filedeleted: thread.filedeleted,
-              spoiler: thread.spoiler,
-              time: thread.time,
-              resto: thread.resto,
-              id: thread.id,
-              sub: thread.sub,
-              imagelimit: thread.imagelimit,
-              name: thread.name,
-              trip: thread.trip,
-              last_modified: thread.last_modified,
-              m_img: thread.m_img,
-              no: thread.no,
-              now: thread.now,
-              since4pass: thread.since4pass,
-              sticky: thread.sticky,
-              unique_ips: thread.unique_ips,
-              tag: thread.tag,
-            })),
-          );
+          const flattenedCatalog: Prisma.CatalogCacheThreadCreateManyInput[] =
+            newCatalog.flatMap((page, pageIndex) =>
+              page.threads.map((thread, threadIndex) => ({
+                catalogCacheId: cached.id,
+                board: input.board,
+                ordinal: pageIndex * page.threads.length + threadIndex,
+                bumplimit: thread.bumplimit,
+                closed: thread.closed,
+                com: thread.com,
+                country: thread.country,
+                country_name: thread.country_name,
+                filename: thread.filename,
+                capcode: thread.capcode,
+                semantic_url: thread.semantic_url,
+                custom_spoiler: thread.custom_spoiler,
+                replies: thread.replies,
+                images: thread.images,
+                ext: thread.ext,
+                fsize: thread.fsize,
+                tim: thread.tim,
+                md5: thread.md5,
+                w: thread.w,
+                h: thread.h,
+                tn_w: thread.tn_w,
+                tn_h: thread.tn_h,
+                filedeleted: thread.filedeleted,
+                spoiler: thread.spoiler,
+                time: thread.time,
+                resto: thread.resto,
+                id: thread.id,
+                sub: thread.sub,
+                imagelimit: thread.imagelimit,
+                name: thread.name,
+                trip: thread.trip,
+                m_img: thread.m_img,
+                no: thread.no,
+                now: thread.now,
+                since4pass: thread.since4pass,
+                sticky: thread.sticky,
+                unique_ips: thread.unique_ips,
+                tag: thread.tag,
+              })),
+            );
 
           // Create cache pages
           await ctx.db.catalogCacheThread.createMany({

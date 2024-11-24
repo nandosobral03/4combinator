@@ -1,1 +1,3 @@
-export const boards = ["g"] as const;
+export const boards = ["g", "x"] as const;
+
+export type ValidBoard = (typeof boards)[number];

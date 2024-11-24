@@ -1,5 +1,6 @@
 import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
 import { catalogRouter } from "./routers/catalog";
+import { threadsRouter } from "./routers/threads";
 
 /**
  * This is the primary router for your server.
@@ -8,6 +9,7 @@ import { catalogRouter } from "./routers/catalog";
  */
 export const appRouter = createTRPCRouter({
   catalog: catalogRouter,
+  threads: threadsRouter,
 });
 
 // export type definition of API

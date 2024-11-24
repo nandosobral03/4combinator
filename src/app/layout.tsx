@@ -1,23 +1,28 @@
+import Footer from "@/app/_components/Footer";
+import Header from "@/app/_components/Header";
 import "@/styles/globals.css";
-import type { Metadata } from "next";
+import { ValidBoard } from "./types/boards";
 
-export const metadata: Metadata = {
-  title: "Hacker News",
-  description: "Hacker News Clone",
+export const metadata = {
+  title: "4combinator",
+  description: "Imageboards made safe for work",
   referrer: "no-referrer",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
+  params: { board: ValidBoard };
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white font-[Verdana]">
-        <div className="mx-auto my-2 max-w-[120ch]">
-          <div className="bg-[#f6f6ef] shadow-md">{children}</div>
-        </div>
+      <body className="flex min-h-screen flex-col">
+        <main className="m-2 mx-auto max-w-6xl bg-[#f6f6ef]">
+          <Header />
+          <div className="flex-grow px-3">{children}</div>
+          <Footer />
+        </main>
       </body>
     </html>
   );

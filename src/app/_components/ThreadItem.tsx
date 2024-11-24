@@ -32,7 +32,7 @@ const ThreadItem = ({ thread, index }: ThreadItemProps) => {
         <div className="flex items-baseline">
           <div className="relative">
             <a
-              href={`/thread/${thread.no}`}
+              href={`/${thread.board}/thread/${thread.no}`}
               className="visited:text-[#828282]"
               suppressHydrationWarning
               onMouseEnter={() => setShowPopover(true)}
@@ -79,6 +79,7 @@ const ThreadItem = ({ thread, index }: ThreadItemProps) => {
               | <span>{thread.images} images</span>
             </>
           )}
+          | <span>{thread.unique_ips} posters </span>
         </div>
       </div>
     </div>
