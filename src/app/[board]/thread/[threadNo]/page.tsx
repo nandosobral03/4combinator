@@ -31,7 +31,6 @@ export default async function ThreadPage({
             <span> {thread.now} </span>
             <span>| {thread.responses.length} comments </span>
             {thread.images > 0 && <span>| {thread.images} images </span>}
-            {thread.unique_ips && <span>| {thread.unique_ips} posters </span>}
             {thread.sticky && <span>| 📌 Pinned </span>}
             {thread.closed && <span>| 🔒 Locked</span>}
           </div>
@@ -63,7 +62,7 @@ export default async function ThreadPage({
       {/* Replies */}
       <div className="space-y-4">
         {thread.responses.map((reply) => (
-          <div key={reply.no} className="pl-8" id={`p${reply.no}`}>
+          <div key={reply.no} className="px-8" id={`p${reply.no}`}>
             <div className="mb-1 text-[13px] text-[#828282]">
               <span>{reply.name}</span>
               {reply.trip && <span> {reply.trip}</span>}

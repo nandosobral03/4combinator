@@ -30,7 +30,7 @@ export default async function Page({
   });
 
   return (
-    <div className="max-w-6xl py-1">
+    <div className="w-full">
       {threads.map((thread, index) => (
         <ThreadItem key={thread.no} thread={thread} index={skip + index + 1} />
       ))}

@@ -17,10 +17,12 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen flex-col">
-        <main className="m-2 mx-auto max-w-6xl bg-[#f6f6ef]">
+      <body className="flex min-h-screen flex-col overflow-y-scroll">
+        <main className="m-2 mx-auto w-full max-w-[72rem] bg-[#f6f6ef]">
           <Header />
-          <div className="flex-grow px-3">{children}</div>
+          <div className="w-full max-w-[72rem] flex-grow px-3 py-4">
+            {children}
+          </div>
           <Footer />
         </main>
       </body>

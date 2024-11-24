@@ -59,27 +59,15 @@ const ThreadItem = ({ thread, index }: ThreadItemProps) => {
           )}
         </div>
         <div className="text-[#828282]">
-          <a href={`/user/${thread.name}`} className="hover:underline">
-            {thread.name}
-          </a>{" "}
-          <a
-            href={`/item/${thread.no}`}
-            className="hover:underline"
-            suppressHydrationWarning
-          >
-            {getTimeAgo(thread.time)}
-          </a>{" "}
-          |{" "}
-          <a href={`/item/${thread.no}`} className="hover:underline">
-            {thread.replies ?? 0} comments
-          </a>
+          <span>{thread.name}</span>{" "}
+          <span suppressHydrationWarning>{getTimeAgo(thread.time)}</span> |{" "}
+          <span suppressHydrationWarning>{thread.replies ?? 0} comments</span>
           {thread.images > 0 && (
             <>
               {" "}
               | <span>{thread.images} images</span>
             </>
           )}
-          | <span>{thread.unique_ips} posters </span>
         </div>
       </div>
     </div>
