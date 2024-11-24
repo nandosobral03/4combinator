@@ -7,6 +7,9 @@ export const metadata = {
   title: "4combinator",
   description: "Imageboards made safe for work",
   referrer: "no-referrer",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default async function RootLayout({
