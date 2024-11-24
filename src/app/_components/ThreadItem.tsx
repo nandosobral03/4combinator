@@ -1,29 +1,54 @@
-import type { Thread } from "../types";
+"use client";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+
+const NoSSRSpan = dynamic(() => import("./NoSSRSpan"), { ssr: false });
+
+import { CatalogCacheThread } from "@prisma/client";
+import ThreadImagePopover from "./ThreadImagePopover";
 
 interface ThreadItemProps {
-  thread: Thread;
+  thread: CatalogCacheThread;
   index: number;
 }
 
-const getFirstLine = (text: string) => {
-  return text ? (text.split("<br>")[0] ?? "") : "";
-};
-
 const ThreadItem = ({ thread, index }: ThreadItemProps) => {
+  const [showPopover, setShowPopover] = useState(false);
+
+  const imageUrl =
+    thread.tim && thread.ext
+      ? `https://i.4cdn.org/${thread.board}/${thread.tim}${thread.ext}`
+      : null;
+
+  const thumbnailUrl =
+    thread.tim && thread.ext
+      ? `https://i.4cdn.org/${thread.board}/${thread.tim}s.jpg`
+      : null;
+
   return (
     <div className="flex gap-1 py-[5px] text-[13px] leading-[15px]">
       <div className="w-[1.5em] text-right text-[#828282]">{index}.</div>
       <div>
         <div className="flex items-baseline">
-          <a href={`/thread/${thread.no}`} className="visited:text-[#828282]">
-            {thread.sub || (
-              <span
-                dangerouslySetInnerHTML={{
-                  __html: getFirstLine(thread.com ?? ""),
-                }}
+          <div className="relative">
+            <a
+              href={`/thread/${thread.no}`}
+              className="visited:text-[#828282]"
+              suppressHydrationWarning
+              onMouseEnter={() => setShowPopover(true)}
+              onMouseLeave={() => setShowPopover(false)}
+            >
+              {thread.sub || <NoSSRSpan com={thread.com ?? ""} />}
+            </a>
+            {showPopover && thumbnailUrl && (
+              <ThreadImagePopover
+                imageUrl={imageUrl}
+                thumbnailUrl={thumbnailUrl}
+                filename={thread.filename}
+                ext={thread.ext}
               />
             )}
-          </a>
+          </div>
           {thread.sub && (
             <a
               href={`https://news.ycombinator.com/from?site=${thread.sub}`}
@@ -34,16 +59,26 @@ const ThreadItem = ({ thread, index }: ThreadItemProps) => {
           )}
         </div>
         <div className="text-[#828282]">
-          <a href={`/user/${thread.by}`} className="hover:underline">
-            {thread.by}
+          <a href={`/user/${thread.name}`} className="hover:underline">
+            {thread.name}
           </a>{" "}
-          <a href={`/item/${thread.no}`} className="hover:underline">
+          <a
+            href={`/item/${thread.no}`}
+            className="hover:underline"
+            suppressHydrationWarning
+          >
             {getTimeAgo(thread.time)}
           </a>{" "}
           |{" "}
           <a href={`/item/${thread.no}`} className="hover:underline">
             {thread.replies ?? 0} comments
           </a>
+          {thread.images > 0 && (
+            <>
+              {" "}
+              | <span>{thread.images} images</span>
+            </>
+          )}
         </div>
       </div>
     </div>

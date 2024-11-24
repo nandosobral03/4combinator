@@ -1,79 +1,51 @@
+import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/Header";
 import ThreadItem from "@/app/_components/ThreadItem";
-import type { Thread } from "@/app/types";
 import { api } from "@/trpc/server";
-import { type FC } from "react";
+import { CatalogCacheThread } from "@prisma/client";
+import Link from "next/link";
 
-const exampleThreads: Thread[] = [
-  {
-    no: 1234567,
-    sub: "archlinux.org",
-    com: "Post your current desktop setup. Here's mine: Running Arch Linux with i3-gaps, polybar, and some custom scripts.",
-    time: 1699123200,
-    replies: 45,
-    images: 23,
-    points: 156,
-    by: "techuser",
-  },
-  {
-    no: 1234568,
-    com: "What programming language should I learn first? Been interested in getting into software development.",
-    time: 1699122300,
-    replies: 67,
-    images: 2,
-    points: 10,
-    by: "learner",
-  },
-  {
-    no: 1234569,
-    sub: "Mechanical keyboard thread",
-    com: "Show off your mechanical keyboards. Just got my first custom build with Gateron Browns and PBT keycaps.",
-    time: 1699121400,
-    replies: 89,
-    images: 56,
-    points: 200,
-    by: "keyboard_enthusiast",
-  },
-  {
-    no: 1234570,
-    com: "Anyone else using Firefox? What extensions do you recommend for privacy and productivity?",
-    time: 1699120500,
-    replies: 34,
-    images: 3,
-    points: 50,
-    by: "privacy_seeker",
-  },
-  {
-    no: 1234571,
-    sub: "ThinkPad appreciation",
-    com: "Just picked up a used T480. These machines are built like tanks. What's your ThinkPad story?",
-    time: 1699119600,
-    replies: 78,
-    images: 15,
-    points: 120,
-    by: "thinkpad_lover",
-  },
-];
+const ITEMS_PER_PAGE = 30;
 
-const Home: FC = async () => {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}) {
+  const params = await searchParams;
+  const page = params?.p ? parseInt(params.p as string) : 1;
+  const skip = (page - 1) * ITEMS_PER_PAGE;
+
   // TODO: Replace with actual API call to fetch /g/ threads
-  const threads: Thread[] = await api.catalog.getCatalogForBoard({
+  const threads: CatalogCacheThread[] = await api.catalog.getCatalogForBoard({
     board: "g",
-    page: 1,
+    skip,
+    take: ITEMS_PER_PAGE,
   });
 
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-[#f6f6ef]">
-        <div className="mx-2 max-w-6xl py-1">
-          {threads.map((thread, index) => (
-            <ThreadItem key={thread.no} thread={thread} index={index + 1} />
-          ))}
-        </div>
-      </main>
+      <div className="max-w-6xl py-1">
+        {threads.map((thread, index) => (
+          <ThreadItem
+            key={thread.no}
+            thread={thread}
+            index={skip + index + 1}
+          />
+        ))}
+        {threads.length === ITEMS_PER_PAGE && (
+          <div className="ml-8 mt-4">
+            <Link
+              href={`/?p=${page + 1}`}
+              className="text-sm text-[#828282] hover:underline"
+            >
+              More
+            </Link>
+          </div>
+        )}
+      </div>
+      <Footer />
     </>
   );
-};
-
-export default Home;
+}

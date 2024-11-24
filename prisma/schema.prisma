@@ -2,30 +2,72 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model CatalogCache {
-    id        String   @id @default(cuid())
-    board     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  board     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-    page      CatalogCachePage[]
+  threads CatalogCacheThread[]
 }
 
-model CatalogCachePage {
-    id        String   @id @default(cuid())
-    page      Int
-    catalogId String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    threads   String // JSON string
+model CatalogCacheThread {
+  id String @id @default(cuid())
 
-    catalog   CatalogCache @relation(fields: [catalogId], references: [id])
+  board          String
+  no             Int
+  sticky         Int?
+  closed         Int?
+  now            String
+  name           String
+  sub            String?
+  com            String?
+  filename       String?
+  ext            String?
+  w              Int?
+  h              Int?
+  tn_w           Int?
+  tn_h           Int?
+  tim            BigInt?
+  time           Int
+  md5            String?
+  fsize          Int?
+  resto          Int     @default(0)
+  capcode        String?
+  semantic_url   String?
+  replies        Int     @default(0)
+  images         Int     @default(0)
+  omitted_posts  Int?
+  omitted_images Int?
+  ordinal        Int
+  last_modified  Int?
+  bumplimit      Int?
+  country        String?
+  country_name   String?
+  custom_spoiler Int?
+  filedeleted    Int?
+  spoiler        Int?
+  imagelimit     Int?
+  trip           String?
+  m_img          Int?
+  since4pass     Int?
+  unique_ips     Int?
+  tag            String?
+
+  catalogCacheId String
+  catalogCache CatalogCache @relation(fields: [catalogCacheId], references: [id])
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
+  @@unique([board, no])
+  @@index([no])
 }
