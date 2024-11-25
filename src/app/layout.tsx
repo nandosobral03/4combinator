@@ -1,7 +1,6 @@
 import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/Header";
 import "@/styles/globals.css";
-import { type ValidBoard } from "./types/boards";
 
 export const metadata = {
   title: "4combinator",
@@ -16,7 +15,6 @@ export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
-  params: { board: ValidBoard };
 }) {
   return (
     <html lang="en">
