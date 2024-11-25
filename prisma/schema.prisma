@@ -36,7 +36,7 @@ model CatalogCacheThread {
   tn_w           Int?
   tn_h           Int?
   tim            DateTime?
-  time           DateTime?
+  time           Int
   md5            String?
   fsize          Int?
   resto          Int     @default(0)
@@ -85,7 +85,7 @@ model ThreadCache {
   tn_w           Int?
   tn_h           Int?
   tim            DateTime?
-  time           DateTime
+  time           Int
   md5            String?
   fsize          Int?
   resto          Int      @default(0)
@@ -128,7 +128,7 @@ model ThreadCacheResponse {
   tn_w           Int?
   tn_h           Int?
   tim            DateTime?
-  time           DateTime
+  time           Int
   md5            String?
   fsize          Int?
   resto          Int     @default(0)
