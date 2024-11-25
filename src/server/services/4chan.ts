@@ -35,7 +35,7 @@ export type BaseThread = {
   country_name?: string;
   sub?: string;
   com?: string;
-  tim?: number;
+  tim?: Date;
   filename?: string;
   ext?: string;
   fsize?: number;
