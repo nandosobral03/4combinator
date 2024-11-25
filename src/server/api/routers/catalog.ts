@@ -105,7 +105,7 @@ export const catalogRouter = createTRPCRouter({
                 images: thread.images,
                 ext: thread.ext,
                 fsize: thread.fsize,
-                tim: thread.tim ? new Date(thread.tim) : undefined,
+                tim: thread.tim ? `${thread.tim}` : undefined,
                 md5: thread.md5,
                 w: thread.w,
                 h: thread.h,
