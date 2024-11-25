@@ -35,7 +35,7 @@ model CatalogCacheThread {
   h              Int?
   tn_w           Int?
   tn_h           Int?
-  tim            DateTime?
+  tim            Int?   // Changed BigInt? to Int to resolve data inconsistency
   time           Int
   md5            String?
   fsize          Int?
@@ -84,7 +84,7 @@ model ThreadCache {
   h              Int?
   tn_w           Int?
   tn_h           Int?
-  tim            DateTime?
+  tim            Int?   // Changed BigInt? to Int to resolve data inconsistency
   time           Int
   md5            String?
   fsize          Int?
@@ -127,7 +127,7 @@ model ThreadCacheResponse {
   h              Int?
   tn_w           Int?
   tn_h           Int?
-  tim            DateTime?
+  tim            Int?   // Changed BigInt? to Int to resolve data inconsistency
   time           Int
   md5            String?
   fsize          Int?
