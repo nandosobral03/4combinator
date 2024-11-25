@@ -2,7 +2,11 @@ import { boards } from "@/app/types/boards";
 import { CACHE_TTL } from "@/app/utils/cache";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { fetchCatalog } from "@/server/services/4chan";
-import { type CatalogCacheThread, type Prisma, type PrismaClient } from "@prisma/client";
+import {
+  type CatalogCacheThread,
+  type Prisma,
+  type PrismaClient,
+} from "@prisma/client";
 import { z } from "zod";
 
 const getCurrentCatalogCache = async (
@@ -101,7 +105,7 @@ export const catalogRouter = createTRPCRouter({
                 images: thread.images,
                 ext: thread.ext,
                 fsize: thread.fsize,
-                tim: thread.tim,
+                tim: thread.tim ? new Date(thread.tim) : undefined,
                 md5: thread.md5,
                 w: thread.w,
                 h: thread.h,
