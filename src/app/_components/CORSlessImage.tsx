@@ -52,6 +52,7 @@ export default function CORSlessImage({
       onClick={handleClick}
     >
       {isHovered && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={src}
           alt={alt}
@@ -61,6 +62,7 @@ export default function CORSlessImage({
           height={height ?? scaledThumbnailHeight}
         />
       )}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={thumbnailUrl ?? src}
         alt={alt}

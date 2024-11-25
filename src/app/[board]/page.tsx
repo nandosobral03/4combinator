@@ -1,7 +1,7 @@
 import ThreadItem from "@/app/_components/ThreadItem";
-import { boards, ValidBoard } from "@/app/types/boards";
+import { boards, type ValidBoard } from "@/app/types/boards";
 import { api } from "@/trpc/server";
-import { CatalogCacheThread } from "@prisma/client";
+import { type CatalogCacheThread } from "@prisma/client";
 import Link from "next/link";
 
 const ITEMS_PER_PAGE = 30;
@@ -10,8 +10,8 @@ export default async function Page({
   params,
   searchParams,
 }: {
-  params: { board: string };
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  params: Promise<{ board: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const awaitedParams = await params;
   const board = awaitedParams.board as ValidBoard;

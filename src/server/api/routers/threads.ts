@@ -2,7 +2,7 @@ import { boards } from "@/app/types/boards";
 import { CACHE_TTL } from "@/app/utils/cache";
 import { createTRPCRouter, publicProcedure } from "@/server/api/trpc";
 import { fetchThread } from "@/server/services/4chan";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { type Prisma, type PrismaClient } from "@prisma/client";
 import { z } from "zod";
 
 const getThreadFromCache = async (

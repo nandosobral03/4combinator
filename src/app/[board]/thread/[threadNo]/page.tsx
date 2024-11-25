@@ -1,5 +1,5 @@
 import CORSlessImage from "@/app/_components/CORSlessImage";
-import { ValidBoard } from "@/app/types/boards";
+import { type ValidBoard } from "@/app/types/boards";
 import { api } from "@/trpc/server";
 
 export default async function ThreadPage({

@@ -76,8 +76,8 @@ export const fetchThread = async (
     if (!response.ok) {
       return null;
     }
-    const data = await response.json();
-    return data as { posts: ThreadDetails[] };
+    const data = (await response.json()) as { posts: ThreadDetails[] };
+    return data;
   } catch (error) {
     console.error("Error fetching thread:", error);
     return null;

@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const NoSSRSpan = dynamic(() => import("./NoSSRSpan"), { ssr: false });
 
-import { CatalogCacheThread } from "@prisma/client";
+import { type CatalogCacheThread } from "@prisma/client";
 import ThreadImagePopover from "./ThreadImagePopover";
 
 interface ThreadItemProps {
@@ -38,7 +38,7 @@ const ThreadItem = ({ thread, index }: ThreadItemProps) => {
               onMouseEnter={() => setShowPopover(true)}
               onMouseLeave={() => setShowPopover(false)}
             >
-              {thread.sub || <NoSSRSpan com={thread.com ?? ""} />}
+              {thread.sub ?? <NoSSRSpan com={thread.com ?? ""} />}
             </a>
             {showPopover && thumbnailUrl && (
               <ThreadImagePopover

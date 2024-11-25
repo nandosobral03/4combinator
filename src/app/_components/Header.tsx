@@ -1,7 +1,8 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { boards, ValidBoard } from "../types/boards";
+import { boards, type ValidBoard } from "../types/boards";
+import Link from "next/link";
 
 const Header = () => {
   const pathname = usePathname();
@@ -14,15 +15,15 @@ const Header = () => {
       <div className="mx-auto max-w-6xl px-2 py-1">
         <nav className="flex items-center gap-1 text-[13px]">
           <span className="font-bold">
-            <a href="/" className="hover:underline">
+            <Link href="/" className="hover:underline">
               4combinator
-            </a>
+            </Link>
           </span>
           <span className="px-1">|</span>
           {board ? (
-            <a href={`/${board}`} className="hover:underline">
+            <Link href={`/${board}`} className="hover:underline">
               /{board}/
-            </a>
+            </Link>
           ) : (
             <span className="text-xs">A work safe 4chan interface</span>
           )}

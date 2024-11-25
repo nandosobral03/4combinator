@@ -36,8 +36,8 @@ export default function HomePage() {
       <div className="text-[13px] text-gray-600">
         <p className="mb-2">
           Note: This is a personal project created for educational purposes. All
-          content is fetched from 4chan's API and temporarily cached to avoid
-          rate limiting.
+          content is fetched from 4chan&apos;s API and temporarily cached to
+          avoid rate limiting.
         </p>
         <p>
           Built with Next.js and Tailwind CSS.

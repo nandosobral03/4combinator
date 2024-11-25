@@ -1,7 +1,7 @@
 import Footer from "@/app/_components/Footer";
 import Header from "@/app/_components/Header";
 import "@/styles/globals.css";
-import { ValidBoard } from "./types/boards";
+import { type ValidBoard } from "./types/boards";
 
 export const metadata = {
   title: "4combinator",
