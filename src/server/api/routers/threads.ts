@@ -9,6 +9,7 @@ const getThreadFromCache = async (
   ctx: { db: PrismaClient },
   board: string,
   threadNo: number,
+  withResponses: boolean = true,
 ) => {
   const thread = await ctx.db.threadCache.findUnique({
     where: {
@@ -17,12 +18,25 @@ const getThreadFromCache = async (
         board,
       },
     },
-    include: {
-      responses: true,
-    },
+    ...(withResponses && {
+      include: {
+        responses: {
+          where: {
+            time: {
+              gte: Math.floor(Date.now() / 1000) - CACHE_TTL / 1000,
+            },
+          },
+        },
+      },
+    }),
   });
+  if (!thread) return null;
 
-  return thread;
+  return {
+    ...thread,
+    // @ts-ignore
+    responses: thread?.responses ?? [],
+  };
 };
 
 export const threadsRouter = createTRPCRouter({
@@ -44,6 +58,7 @@ export const threadsRouter = createTRPCRouter({
           ctx,
           input.board,
           input.threadNo,
+          false,
         );
         // If the catalog is older than CACHE_TTL or doesn't exist, fetch and cache new data
         if (!thread || Date.now() - thread.createdAt.getTime() > CACHE_TTL) {
