@@ -9,7 +9,7 @@ const getThreadFromCache = async (
   ctx: { db: PrismaClient },
   board: string,
   threadNo: number,
-  withResponses: boolean = true,
+  withResponses = true,
 ) => {
   const thread = await ctx.db.threadCache.findUnique({
     where: {
@@ -35,7 +35,9 @@ const getThreadFromCache = async (
 
   return {
     ...thread,
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     responses: thread?.responses ?? [],
   };
 };
