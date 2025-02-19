@@ -26,6 +26,7 @@ const getThreadFromCache = async (
               gte: Math.floor(Date.now() / 1000) - CACHE_TTL / 1000,
             },
           },
+          take: 200,
         },
       },
     }),
